@@ -28,6 +28,11 @@ jobs:
     - name: Install dependencies
       run: sudo apt -y update && sudo apt install virtualenvwrapper gmsh tree
 
+    - name: Install CRTomo
+      run: |
+          wget https://github.com/geophysics-ubonn/titatest/releases/download/vtest2/crtomomod_1.8.0_amd64.deb
+          dpkg -i crtomomod_1.8.0_amd64.deb
+
     - name: Create virtualenv
       run: bash ./recreate_venv.sh
 
