@@ -21,6 +21,9 @@ jobs:
     - name: Create virtualenv
       run: ./recreate_venv.sh
 
+    - name: Create virtualenv
+      run: ./build_documentation_ci.sh
+
     # - name: Artifacts
     #   uses: actions/upload-artifact@v4
     #   with:
