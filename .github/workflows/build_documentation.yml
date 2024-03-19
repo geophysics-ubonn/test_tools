@@ -19,9 +19,9 @@ jobs:
       run: sudo apt -y update && sudo apt install virtualenvwrapper
 
     - name: Create virtualenv
-      run: ./recreate_venv.sh
+      run: bash ./recreate_venv.sh
 
-    - name: Create virtualenv
+    - name: Build the documentation
       run: ./build_documentation_ci.sh
 
     # - name: Artifacts
