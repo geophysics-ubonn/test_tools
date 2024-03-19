@@ -18,6 +18,9 @@ on:
 
 jobs:
   build_documentation:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
@@ -26,7 +29,7 @@ jobs:
       run: ls
 
     - name: Install dependencies
-      run: sudo apt -y update && sudo apt install virtualenvwrapper gmsh tree
+      run: sudo apt -y update && sudo apt install virtualenvwrapper gmsh tree texlive
 
     - name: Install CRTomo
       run: |
@@ -40,6 +43,19 @@ jobs:
     - name: Build the documentation
       run: bash ./build_documentation_ci.sh
 
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        # Upload the html page
+        path: 'doc/_build/html/'
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+
     # - name: Artifacts
     #   uses: actions/upload-artifact@v4
     #   with:
@@ -48,26 +64,3 @@ jobs:
     #         src/CRMod_stable
     #         src/CRTomo_stable
     #         cutmckee/CutMcK_stable
-
-   # Single deploy job since we're just deploying
-  deploy:
-    needs:
-        - build_documentation
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload the html page
-          path: 'doc/_build/html/'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
